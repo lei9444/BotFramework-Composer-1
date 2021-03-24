@@ -16,18 +16,18 @@ RUN apt update \
 FROM base as build
 ARG YARN_ARGS
 
-WORKDIR /app/Composer
+WORKDIR /src/Composer
 COPY ./Composer .
 COPY ./extensions ../extensions
 # run yarn install as a distinct layer
 RUN yarn install --frozen-lock-file $YARN_ARGS && yarn cache clean
 ENV NODE_OPTIONS "--max-old-space-size=6114"
 ENV NODE_ENV "production"
-ENV COMPOSER_BUILTIN_EXTENSIONS_DIR "/app/extensions"
+ENV COMPOSER_BUILTIN_EXTENSIONS_DIR "/src/extensions"
 RUN yarn build:prod $YARN_ARGS
 
-ENV COMPOSER_BUILTIN_EXTENSIONS_DIR "/app/extensions"
-ENV COMPOSER_REMOTE_EXTENSIONS_DIR "/app/remote-extensions"
-ENV COMPOSER_REMOTE_EXTENSION_DATA_DIR "/app/extension-data"
-ENV COMPOSER_EXTENSION_MANIFEST "/app/extensions.json"
+ENV COMPOSER_BUILTIN_EXTENSIONS_DIR "/src/extensions"
+ENV COMPOSER_REMOTE_EXTENSIONS_DIR "/src/remote-extensions"
+ENV COMPOSER_REMOTE_EXTENSION_DATA_DIR "/src/extension-data"
+ENV COMPOSER_EXTENSION_MANIFEST "/src/extensions.json"
 CMD ["yarn","start:server"]
