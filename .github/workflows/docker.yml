@@ -42,6 +42,7 @@ jobs:
 
       - name: show disk space
         run: |
+          docker images
           df -hl
 
       - name: Clean up
