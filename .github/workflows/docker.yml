@@ -40,6 +40,10 @@ jobs:
           curl -Is http://localhost:5000 | grep -q "200 OK"
         shell: bash
 
+      - name: show disk space
+        run: |
+          df -hl
+
       - name: Clean up
         if: always()
         run: docker rm -f $(docker ps -a -q)
