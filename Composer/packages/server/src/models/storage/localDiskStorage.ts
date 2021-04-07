@@ -10,15 +10,16 @@ import archiver from 'archiver';
 import rimraf from 'rimraf';
 import { FileExtensions } from '@botframework-composer/types';
 
+import { fileManager } from './thread/FileManager';
 import { IFileStorage, Stat, MakeDirectoryOptions } from './interface';
 
 const stat = promisify(fs.stat);
 const statSync = fs.statSync;
-const readFile = promisify(fs.readFile);
+//const readFile = promisify(fs.readFile);
 const readFileSync = fs.readFileSync;
 const readDir = promisify(fs.readdir);
 const readDirSync = fs.readdirSync;
-const writeFile = promisify(fs.writeFile);
+//const writeFile = promisify(fs.writeFile);
 const writeFileSync = fs.writeFileSync;
 const removeFile = promisify(fs.unlink);
 const removeFileSync = fs.unlinkSync;
@@ -69,8 +70,9 @@ export class LocalDiskStorage implements IFileStorage {
   }
 
   async readFile(path: string): Promise<string> {
-    const raw = await readFile(path, 'utf-8');
-    return raw.replace(/^\uFEFF/, ''); // UTF-8 BOM: https://github.com/nodejs/node-v0.x-archive/issues/1918
+    return await fileManager.readFile(path);
+    // const raw = await readFile(path, 'utf-8');
+    // return raw.replace(/^\uFEFF/, ''); // UTF-8 BOM: https://github.com/nodejs/node-v0.x-archive/issues/1918
   }
 
   readFileSync(path: string): string {
@@ -105,7 +107,8 @@ export class LocalDiskStorage implements IFileStorage {
   }
 
   async writeFile(path: string, content: any): Promise<void> {
-    await writeFile(path, content);
+    return await fileManager.writeFile(path, content);
+    //await writeFile(path, content);
   }
 
   writeFileSync(path: string, content: any): void {
