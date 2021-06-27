@@ -64,11 +64,11 @@ jobs:
         env:
           BODY_VALUE: ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ secrets.CONTAINER_NAME }}:${{ steps.PRNumber.outputs.result }}
           PR_NUMBER: ${{ steps.PRNumber.outputs.result }}
-          URL: 'http://52.160.65.153'
+          URL: '${{secrets.CODEREVIEW_URL}}'
           PORT_STR: ${{steps.run.outputs.response}}
         uses: actions/github-script@v4
         with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
+          github-token: ${{secrets.TOKEN}}
           script: |
             const port = JSON.parse(process.env.PORT_STR).port;
             github.issues.createComment({
