@@ -65,17 +65,15 @@ jobs:
           BODY_VALUE: ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ secrets.CONTAINER_NAME }}:${{ steps.PRNumber.outputs.result }}
           PR_NUMBER: ${{ steps.PRNumber.outputs.result }}
           URL: '${{secrets.CODEREVIEW_URL}}'
-          PORT_STR: ${{steps.run.outputs.response}}
         uses: actions/github-script@v4
         with:
           github-token: ${{secrets.TOKEN}}
           script: |
-            const port = JSON.parse(process.env.PORT_STR).port;
             github.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `open ${process.env.URL}:${port}`
+              body: `open ${process.env.URL}`
             })
 
       - name: 'Build and push image'
